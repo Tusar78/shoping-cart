@@ -4,30 +4,28 @@ const decreasedBtn = document.getElementById('decreased-btn');
 
 // Increased and decreased case function
 const caseUpdate = isIncreased => {
-    const caseTotal = document.getElementById('case-total')
-    const caseTotalText = caseTotal.innerText;
-    const caseTotalValue = parseFloat(caseTotalText)
-
     const caseInput = document.getElementById('case-input');
-    const caseInputText = caseInput.value;
+    let caseInputText = caseInput.value;
     const caseInputValue = parseFloat(caseInputText);
     
     if (isIncreased) {             
         // Case increased
-        caseInput.value = caseInputValue + 1;
-        // Amount increased
-        caseTotal.innerText = caseTotalValue + 59;
+        caseInputText = caseInputValue + 1;
         // Remove attribute
         decreasedBtn.removeAttribute('disabled')
     } else {
         if (caseInputValue > 0) {
-            caseTotal.innerText = caseTotalValue - 59;  
-            caseInput.value = caseInputValue - 1;
+            caseInputText = caseInputValue - 1;
         } else {
             decreasedBtn.setAttribute('disabled', true)
-        }
-              
+        }              
     }
+    caseInput.value = caseInputText;
+
+    // Get case total
+    const caseTotal = document.getElementById('case-total')
+    // Amount increased
+    caseTotal.innerText = caseInputText * 59;
 }
  
 // increased functionalities
