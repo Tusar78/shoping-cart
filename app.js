@@ -9,58 +9,73 @@ const caseMinus = document.getElementById('case-minus');
 
 
 // Increased and decreased case function
-const amountUpdate = (userInput, userOutput, btn, multiply, isIncreased) => {
-    const caseInput = document.getElementById(userInput);
-    let caseInputText = caseInput.value;
-    const caseInputValue = parseFloat(caseInputText);
+const amountUpdate = (product, setGetAttr, price, isIncreased) => {
+    const productInput = document.getElementById(product+'-input');
+    let productInputText = productInput.value;
+    const productInputValue = parseFloat(productInputText);
     
     if (isIncreased) {         
-        caseInputText = caseInputValue + 1;
-        btn.removeAttribute('disabled')
+        productInputText = productInputValue + 1;
+        setGetAttr.removeAttribute('disabled')
     } else {
-        if (caseInputValue > 0) {
-            caseInputText = caseInputValue - 1;
+        if (productInputValue > 0) {
+            productInputText = productInputValue - 1;
         } else {
-            btn.setAttribute('disabled', true)
+            setGetAttr.setAttribute('disabled', true)
         }              
     }
-    caseInput.value = caseInputText;
+    productInput.value = productInputText;
 
     // Get case total
-    const caseTotal = document.getElementById(userOutput)
-    caseTotal.innerText = caseInputText * multiply;
+    const productTotal = document.getElementById(product+'-total')
+    productTotal.innerText = productInputText * price;
 
-    // Total Money
-    // const subTotal = document.getElementById('sub-total');
-    // let subTotalAmount = subTotal.innerText;
-    // subTotalAmount = parseFloat(subTotalAmount) + parseFloat(caseTotal.innerText);
-    // subTotal.innerText = subTotalAmount;
+    // SubTotal Amount
+    calculateAmount()
 
-    // const tax = document.getElementById('tax');
-    // let taxAmount = subTotal.innerText;
+}
 
-    // const total = document.getElementById('total');
-    // let totalMoney = subTotal.innerText;
-     
+const getInputValue = (product) => {
+    const productInput = document.getElementById(product+'-input');
+    const productNumber = parseInt(productInput.value);
+    return productNumber;
+}
+
+const calculateAmount = () => {
+    const iphoneTotal = getInputValue('iphone') * 1219;
+    const caseTotal = getInputValue('case') * 59;
+    const subTotalAmount = iphoneTotal + caseTotal;
+    
+    // added subtotal section
+    const subTotal = document.getElementById('sub-total');
+    subTotal.innerText = subTotalAmount;
+
+    // Generate Tax
+    const tax = document.getElementById('tax-amount');
+    const taxAmount = subTotalAmount / 12;
+    tax.innerText = taxAmount.toFixed(2);
+
+    // Total
+    const total = document.getElementById('total-price');
+    total.innerText = subTotalAmount + parseFloat(taxAmount.toFixed(2));
 }
  
 // increased functionalities for iphone 
 iphonePlus.addEventListener('click', e => {
-    amountUpdate('iphone-input', 'iphone-total', iphoneMinus, 1219, true);
+    amountUpdate('iphone', iphoneMinus, 1219, true);
 })
 
 // Decreased functionalities for iphone
 iphoneMinus.addEventListener('click', e => {
-    amountUpdate('iphone-input', 'iphone-total', iphoneMinus, 1219, false);
+    amountUpdate('iphone', iphoneMinus, 1219, false);
 })
 
 // increased functionalities for casing 
 casePlus.addEventListener('click', e => {
-    amountUpdate('case-input', 'case-total', caseMinus, 59, true);
+    amountUpdate('case', caseMinus, 59, true);
 })
 
 // Decreased functionalities for casing
 caseMinus.addEventListener('click', e => {
-    amountUpdate('case-input', 'case-total', caseMinus, 59, false);
-
+    amountUpdate('case', caseMinus, 59, false);
 })
